@@ -6,7 +6,12 @@ const todoComments = []
 
 files.forEach(file => {
     const matches = [...file.matchAll(/\/\/\s*TODO\s*(.*?)(?=\r?\n|$)/g)];
-    matches.forEach(match => todoComments.push(match[1])); 
+    matches.forEach(match => {
+        const comment = String(match[1]);
+        todoComments.push({comment:comment,
+                           important:comment.includes('!')})
+        }
+    ); 
 });
 
 
@@ -23,6 +28,18 @@ function processCommand(command) {
     switch (command) {
         case 'exit':
             process.exit(0);
+            break;
+        case 'show':
+            todoComments.forEach(comment => {
+                console.log(comment.comment);
+            });
+            break;
+        case 'important':
+            todoComments.forEach(comment => {
+                if (comment.important) {
+                    console.log(comment.comment);
+                }
+            });
             break;
         default:
             console.log('wrong command');
