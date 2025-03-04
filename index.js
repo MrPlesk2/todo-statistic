@@ -53,12 +53,42 @@ function processCommand(command) {
             writeTable(todoComments.filter(item => item.data && item.data.username === commandSplited[1]));
             break;
         case 'sort':
-            
+            sortTodos(commandSplited[1]);
+            writeTable(todoComments);
             break;
         default:
             console.log('wrong command');
             break;
     }
+}
+function sortTodos(sortRule) {
+    switch (sortRule) {
+        case 'importance':
+            todoComments.sort((x, y) => y.important - x.important)
+            break;
+        case 'user':
+            todoComments.sort((x, y) => {
+                if (x.data === null && y.data) {
+                    return 1
+                } else if (x.data === null && y.data === null) {
+                    return 0
+                } else {
+                    return -1;
+                }
+            });
+            break;
+        case 'date':
+            todoComments.sort((x, y) => {
+                if (x.data && y.data) {
+                    return y.data.date - x.data.date
+                } else if (x.data === null) {
+                    return 1
+                } else {
+                    return -1;
+                }
+            });
+    }
+
 }
 
 function printAllForUser(username) {
