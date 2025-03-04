@@ -9,6 +9,7 @@ files.forEach(file => {
     matches.forEach(match => {
         const comment = String(match[1]);
         todoComments.push({comment:comment,
+                           data:parseCommentWithUsername(comment),
                            important:(comment.match('!') || []).length})
         }
     ); 
