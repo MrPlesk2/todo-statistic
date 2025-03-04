@@ -47,7 +47,6 @@ function processCommand(command) {
             break;
         case 'important':
             writeTable(todoComments.filter(item => item.important > 0));
-
             break;
         case 'user':
             writeTable(todoComments.filter(item => item.data && item.data.username === commandSplited[1]));
@@ -55,6 +54,10 @@ function processCommand(command) {
         case 'sort':
             sortTodos(commandSplited[1]);
             writeTable(todoComments);
+            break;
+        case 'date':
+            const filterDate = new Date(commandSplited[1]);
+            writeTable(todoComments.filter(item => item.data && item.data.date >= filterDate));
             break;
         default:
             console.log('wrong command');
@@ -89,15 +92,6 @@ function sortTodos(sortRule) {
             });
     }
 
-}
-
-function printAllForUser(username) {
-    todoComments
-        .map(x=>parseCommentWithUsername(x.comment))
-        .filter(x => x !== null)
-        .filter(x => x.username.toLowerCase() === username.toLowerCase())
-        .map(x=>`${x.username} ${x.date} ${x.comment}`)
-        .forEach(x=>console.log(x));
 }
 
 function parseCommentWithUsername(line) {
