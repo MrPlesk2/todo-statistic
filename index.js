@@ -9,7 +9,7 @@ files.forEach(file => {
     matches.forEach(match => {
         const comment = String(match[1]);
         todoComments.push({comment:comment,
-                           important:comment.includes('!')})
+                           important:(comment.match('!') || []).length})
         }
     ); 
 });
@@ -25,7 +25,8 @@ function getFiles() {
 }
 
 function processCommand(command) {
-    switch (command) {
+    const commandSplited = command.split(' ');
+    switch (commandSplited[0]) {
         case 'exit':
             process.exit(0);
             break;
@@ -36,10 +37,16 @@ function processCommand(command) {
             break;
         case 'important':
             todoComments.forEach(comment => {
-                if (comment.important) {
+                if (comment.important > 0) {
                     console.log(comment.comment);
                 }
             });
+            break;
+        case 'user':
+            
+            break;
+        case 'sort':
+            
             break;
         default:
             console.log('wrong command');
