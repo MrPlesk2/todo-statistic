@@ -43,7 +43,7 @@ function processCommand(command) {
             });
             break;
         case 'user':
-            
+            printAllForUser(commandSplited[1]);
             break;
         case 'sort':
             
@@ -53,5 +53,24 @@ function processCommand(command) {
             break;
     }
 }
+
+function printAllForUser(username) {
+    todoComments
+        .map(x=>parseCommentWithUsername(x.comment))
+        .filter(x => x !== null)
+        .filter(x => x.username.toLowerCase() === username.toLowerCase())
+        .map(x=>`${x.username} ${x.date} ${x.comment}`)
+        .forEach(x=>console.log(x));
+}
+
+function parseCommentWithUsername(line) {
+    const matches = line.match(/^(.*?);\s*(.*?);\s*(.*)$/);
+    if (matches === null) {
+        return null;
+    }
+    const date = new Date(matches[2]);
+    return {username: matches[1], date: date, comment: matches[3]};
+}
+
 
 // TODO you can do it!
